@@ -1,6 +1,6 @@
 import { Cart, CartItem } from "../types";
-import { getCartById, saveCart } from "../data";
-import { getProductById } from "../data";
+import { getCart, saveCart } from "../data/cartData";
+import { getProductById } from "../data/productionData";
 
 //Create a new cart
 export function createCart(cartId: string): Cart {
@@ -16,8 +16,10 @@ export function createCart(cartId: string): Cart {
 }
 
 //Get a cart by id
-export function getCart(cartId: string): Cart {
-  const cart = getCartById(cartId);
+export async function getCartById(cartId: string): Promise<Cart> {
+  const carts = await getCart();
+
+  const cart = carts.find((c: Cart) => c.id === cartId);
 
   if (!cart) {
     throw new Error("Cart not found");
@@ -37,7 +39,7 @@ export function addItem(
     throw new Error("Quantity must be greater than 0");
   }
 
-  const cart = getCart(cartId);
+  const cart = getCart();
 
   const product = getProductById(productId);
   if (!product) {
