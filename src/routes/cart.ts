@@ -77,7 +77,8 @@ cartRouter.put(
 );
 
 cartRouter.delete("/:id/items/:productId", async (request, response) => {
-  const { id, productId } = request.params;
+  const id = String(request.params.id);
+  const productId = String(request.params.productId);
 
   try {
     const cart = await removeItem(id, productId);

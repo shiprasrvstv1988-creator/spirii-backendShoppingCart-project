@@ -5,12 +5,13 @@ const productsRouter = Router();
 
 productsRouter.get("/", async (request, response) => {
   try {
-    const products = getProducts();
+    const products = await getProducts();
+
     response.status(200).json(products);
   } catch (error) {
     const message = error instanceof Error ? error.message : "Unknown error";
 
-    response.status(404).json({ error: message });
+    response.status(500).json({ error: message });
   }
 });
 
