@@ -1,9 +1,9 @@
 import { Cart, CartItem } from "../types";
-import { getCart, saveCart } from "../data/cartData";
-import { getProductById } from "../data/productionData";
+import { getCartById, saveCart } from "../../data/cartData";
+import { getProductById } from "../../data/productionData";
 
 //Create a new cart
-export function createCart(cartId: string): Cart {
+export async function createCart(cartId: string): Promise<Cart> {
   const newCart: Cart = {
     id: cartId,
     items: [],
@@ -11,15 +11,13 @@ export function createCart(cartId: string): Cart {
     createdAt: new Date().toISOString(),
   };
 
-  saveCart(newCart);
+  await saveCart(newCart);
   return newCart;
 }
 
 //Get a cart by id
-export async function getCartById(cartId: string): Promise<Cart> {
-  const carts = await getCart();
-
-  const cart = carts.find((c: Cart) => c.id === cartId);
+export async function getCart(cartId: string): Promise<Cart> {
+  const cart = await getCartById(cartId);
 
   if (!cart) {
     throw new Error("Cart not found");
@@ -32,15 +30,14 @@ export async function getCartById(cartId: string): Promise<Cart> {
 export async function addItem(
   cartId: string,
   productId: string,
-  quantity: number
+  quantity: number,
 ): Promise<Cart> {
   if (quantity <= 0) {
     throw new Error("Quantity must be greater than 0");
   }
 
-  const cart = await getCart();
-
-  const product = await getProductById(Number(productId));
+  const cart = await getCart(cartId);
+  const product = await getProductById(productId);
 
   if (!product) {
     throw new Error("Product not found");
@@ -62,7 +59,7 @@ export async function addItem(
     cart.items.push(newItem);
   }
 
-  saveCart(cart);
+  await saveCart(cart);
   return cart;
 }
 
@@ -70,13 +67,13 @@ export async function addItem(
 export async function updateItemQuantity(
   cartId: string,
   productId: string,
-  quantity: number
+  quantity: number,
 ): Promise<Cart> {
   if (quantity <= 0) {
     throw new Error("Quantity must be greater than 0");
   }
 
-  const cart = await getCart();
+  const cart = await getCart(cartId);
 
   const item = cart.items.find((i: CartItem) => i.productId === productId);
 
@@ -86,16 +83,16 @@ export async function updateItemQuantity(
 
   item.quantity = quantity;
 
-  saveCart(cart);
+  await saveCart(cart);
   return cart;
 }
 
 //Remove item from cart
 export async function removeItem(
   cartId: string,
-  productId: string
+  productId: string,
 ): Promise<Cart> {
-  const cart = await getCart();
+  const cart = await getCart(cartId);
 
   const itemExists = cart.items.find(
     (item: CartItem) => item.productId === productId
@@ -109,13 +106,13 @@ export async function removeItem(
     (item: CartItem) => item.productId !== productId
   );
 
-  saveCart(cart);
+  await saveCart(cart);
   return cart;
 }
 
 //Checkout cart and calculate total price
 export async function checkout(cartId: string) {
-  const cart = await getCart();
+  const cart = await getCart(cartId);
 
   if (cart.items.length === 0) {
     throw new Error("Cart is empty");
@@ -134,7 +131,7 @@ export async function checkout(cartId: string) {
   }
 
   cart.status = "checked_out";
-  saveCart(cart);
+  await saveCart(cart);
 
   return {
     cartId: cart.id,
