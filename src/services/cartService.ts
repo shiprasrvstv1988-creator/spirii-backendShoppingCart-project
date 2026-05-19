@@ -31,15 +31,14 @@ export function addItem(
   cartId: string,
   productId: string,
   quantity: number,
-  unitPrice: number
 ): Cart {
   if (quantity <= 0) {
     throw new Error("Quantity must be greater than 0");
   }
 
   const cart = getCart(cartId);
-
   const product = getProductById(productId);
+
   if (!product) {
     throw new Error("Product not found");
   }
@@ -52,7 +51,7 @@ export function addItem(
     const newItem: CartItem = {
       productId,
       quantity,
-      unitPrice,
+      unitPrice: product.price,
     };
 
     cart.items.push(newItem);
@@ -63,11 +62,10 @@ export function addItem(
 }
 
 //Update quantity of an item in the cart
-
 export function updateItemQuantity(
   cartId: string,
   productId: string,
-  quantity: number
+  quantity: number,
 ): Cart {
   if (quantity <= 0) {
     throw new Error("Quantity must be greater than 0");
@@ -88,7 +86,6 @@ export function updateItemQuantity(
 }
 
 //Remove item from cart
-
 export function removeItem(cartId: string, productId: string): Cart {
   const cart = getCart(cartId);
 
@@ -105,7 +102,6 @@ export function removeItem(cartId: string, productId: string): Cart {
 }
 
 //Checkout cart and calculate total price
-
 export function checkout(cartId: string) {
   const cart = getCart(cartId);
 
@@ -124,6 +120,9 @@ export function checkout(cartId: string) {
 
     total += product.price * item.quantity;
   }
+
+  cart.status = "checked_out";
+  saveCart(cart);
 
   return {
     cartId: cart.id,
