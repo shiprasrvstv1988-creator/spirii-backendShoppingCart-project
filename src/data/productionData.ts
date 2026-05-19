@@ -2,7 +2,7 @@ import { readFile } from "fs/promises";
 import path from "path";
 import { Product } from "../types/index";
 
-const productsFilePath = path.join(process.cwd(), "data", "products.json");
+const productsFilePath = path.join(process.cwd(), "data", "product.json");
 
 export async function getProducts() {
   const data = await readFile(productsFilePath, "utf-8");

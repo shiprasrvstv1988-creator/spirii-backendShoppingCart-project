@@ -1,1 +1,38 @@
-[]
+[
+  {
+    "id": "8bda5083-adbe-4f34-b0d9-577fe8d58f8c",
+    "items": [
+      {
+        "productId": "1",
+        "quantity": 2,
+        "unitPrice": 25
+      }
+    ],
+    "status": "active",
+    "createdAt": "2026-05-19T19:58:37.490Z"
+  },
+  {
+    "id": "127664a5-b171-4c16-831a-eb3505b7a413",
+    "items": [],
+    "status": "active",
+    "createdAt": "2026-05-19T20:01:45.168Z"
+  },
+  {
+    "id": "99dfe043-46d0-4cfa-8abc-0c5901870384",
+    "items": [],
+    "status": "checked_out",
+    "createdAt": "2026-05-19T20:03:11.952Z"
+  },
+  {
+    "id": "b7f733b5-84ba-4b8f-81ee-f77ada50787f",
+    "items": [],
+    "status": "active",
+    "createdAt": "2026-05-19T20:11:16.362Z"
+  },
+  {
+    "id": "5b0fb6cc-f7f2-4000-9165-34b1ea7df0bd",
+    "items": [],
+    "status": "active",
+    "createdAt": "2026-05-19T20:17:34.579Z"
+  }
+]
