@@ -61,3 +61,28 @@ export function addItem(
   saveCart(cart);
   return cart;
 }
+
+//Update quantity of an item in the cart
+
+export function updateItemQuantity(
+  cartId: string,
+  productId: string,
+  quantity: number
+): Cart {
+  if (quantity <= 0) {
+    throw new Error("Quantity must be greater than 0");
+  }
+
+  const cart = getCart(cartId);
+
+  const item = cart.items.find((i) => i.productId === productId);
+
+  if (!item) {
+    throw new Error("Item not found in cart");
+  }
+
+  item.quantity = quantity;
+
+  saveCart(cart);
+  return cart;
+}
