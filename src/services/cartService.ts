@@ -62,7 +62,6 @@ export function addItem(
 }
 
 //Update quantity of an item in the cart
-
 export function updateItemQuantity(
   cartId: string,
   productId: string,
