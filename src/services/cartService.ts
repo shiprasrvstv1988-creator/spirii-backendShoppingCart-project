@@ -40,7 +40,9 @@ export async function addItem(
     throw new Error("Product not found");
   }
 
-  const existingItem = cart.items.find((item) => item.productId === productId);
+  const existingItem = cart.items.find(
+    (item: CartItem) => item.productId === productId
+  );
 
   if (existingItem) {
     existingItem.quantity += quantity;
@@ -91,7 +93,9 @@ export async function removeItem(
     throw new Error("Item not found in cart");
   }
 
-  cart.items = cart.items.filter((item) => item.productId !== productId);
+  cart.items = cart.items.filter(
+    (item: CartItem) => item.productId !== productId
+  );
 
   await saveCart(cart);
   return cart;
