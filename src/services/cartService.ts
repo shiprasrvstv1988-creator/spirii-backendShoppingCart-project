@@ -29,24 +29,26 @@ export async function getCartById(cartId: string): Promise<Cart> {
 }
 
 //Add item to cart
-export function addItem(
+export async function addItem(
   cartId: string,
   productId: string,
   quantity: number
-): Cart {
+): Promise<Cart> {
   if (quantity <= 0) {
     throw new Error("Quantity must be greater than 0");
   }
 
-  const cart = getCart();
+  const cart = await getCart();
 
-  const product = getProductById(productId);
+  const product = await getProductById(Number(productId));
 
   if (!product) {
     throw new Error("Product not found");
   }
 
-  const existingItem = cart.items.find((item) => item.productId === productId);
+  const existingItem = cart.items.find(
+    (item: CartItem) => item.productId === productId
+  );
 
   if (existingItem) {
     existingItem.quantity += quantity;
@@ -65,18 +67,18 @@ export function addItem(
 }
 
 //Update quantity of an item in the cart
-export function updateItemQuantity(
+export async function updateItemQuantity(
   cartId: string,
   productId: string,
   quantity: number
-): Cart {
+): Promise<Cart> {
   if (quantity <= 0) {
     throw new Error("Quantity must be greater than 0");
   }
 
-  const cart = getCart(cartId);
+  const cart = await getCart();
 
-  const item = cart.items.find((i) => i.productId === productId);
+  const item = cart.items.find((i: CartItem) => i.productId === productId);
 
   if (!item) {
     throw new Error("Item not found in cart");
@@ -89,24 +91,31 @@ export function updateItemQuantity(
 }
 
 //Remove item from cart
-export function removeItem(cartId: string, productId: string): Cart {
-  const cart = getCart(cartId);
+export async function removeItem(
+  cartId: string,
+  productId: string
+): Promise<Cart> {
+  const cart = await getCart();
 
-  const itemExists = cart.items.find((item) => item.productId === productId);
+  const itemExists = cart.items.find(
+    (item: CartItem) => item.productId === productId
+  );
 
   if (!itemExists) {
     throw new Error("Item not found in cart");
   }
 
-  cart.items = cart.items.filter((item) => item.productId !== productId);
+  cart.items = cart.items.filter(
+    (item: CartItem) => item.productId !== productId
+  );
 
   saveCart(cart);
   return cart;
 }
 
 //Checkout cart and calculate total price
-export function checkout(cartId: string) {
-  const cart = getCart(cartId);
+export async function checkout(cartId: string) {
+  const cart = await getCart();
 
   if (cart.items.length === 0) {
     throw new Error("Cart is empty");
@@ -115,7 +124,7 @@ export function checkout(cartId: string) {
   let total = 0;
 
   for (const item of cart.items) {
-    const product = getProductById(item.productId);
+    const product = await getProductById(item.productId);
 
     if (!product) {
       throw new Error(`Product ${item.productId} not found`);
