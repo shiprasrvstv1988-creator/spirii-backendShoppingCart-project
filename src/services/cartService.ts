@@ -1,8 +1,8 @@
 import { Cart, CartItem } from "../types";
 import { getCartById, saveCart } from "../data";
+import { getProductById } from "../data";
 
 //Create a new cart
-
 export function createCart(cartId: string): Cart {
   const newCart: Cart = {
     id: cartId,
@@ -11,6 +11,7 @@ export function createCart(cartId: string): Cart {
     createdAt: new Date().toISOString(),
   };
 
+  saveCart(newCart);
   return newCart;
 }
 
@@ -25,4 +26,38 @@ export function getCart(cartId: string): Cart {
   return cart;
 }
 
-//
+//Add item to cart
+export function addItem(
+  cartId: string,
+  productId: string,
+  quantity: number,
+  unitPrice: number
+): Cart {
+  if (quantity <= 0) {
+    throw new Error("Quantity must be greater than 0");
+  }
+
+  const cart = getCart(cartId);
+
+  const product = getProductById(productId);
+  if (!product) {
+    throw new Error("Product not found");
+  }
+
+  const existingItem = cart.items.find((item) => item.productId === productId);
+
+  if (existingItem) {
+    existingItem.quantity += quantity;
+  } else {
+    const newItem: CartItem = {
+      productId,
+      quantity,
+      unitPrice,
+    };
+
+    cart.items.push(newItem);
+  }
+
+  saveCart(cart);
+  return cart;
+}
