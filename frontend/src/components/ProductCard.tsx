@@ -1,3 +1,5 @@
+import { useCart } from "../context/CartContext";
+
 type Product = {
   id: string;
   name: string;
@@ -7,6 +9,8 @@ type Product = {
 };
 
 export default function ProductCard({ product }: { product: Product }) {
+  const { addToCart } = useCart();
+
   return (
     <div
       style={{
@@ -36,6 +40,7 @@ export default function ProductCard({ product }: { product: Product }) {
       </p>
 
       <button
+        onClick={() => addToCart(product.id, product.price)}
         disabled={!product.available}
         style={{
           width: "100%",

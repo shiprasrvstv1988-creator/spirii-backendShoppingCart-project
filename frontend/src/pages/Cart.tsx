@@ -1,10 +1,8 @@
-import { useState } from "react";
-import { mockCart } from "../data/cart";
+import { useCart } from "../context/CartContext";
 import { mockProducts } from "../data/products";
 
 export default function Cart() {
-  const [cart, setCart] = useState(mockCart);
-
+  const { cart, increase, decrease, remove, cartTotal } = useCart();
   const cartItems = cart.items.map((item) => {
     const product = mockProducts.find((p) => p.id === item.productId);
 
@@ -14,40 +12,6 @@ export default function Cart() {
       description: product?.description || "",
     };
   });
-
-  const increase = (productId: string) => {
-    setCart((prev) => ({
-      ...prev,
-      items: prev.items.map((item) =>
-        item.productId === productId
-          ? { ...item, quantity: item.quantity + 1 }
-          : item,
-      ),
-    }));
-  };
-
-  const decrease = (productId: string) => {
-    setCart((prev) => ({
-      ...prev,
-      items: prev.items.map((item) =>
-        item.productId === productId && item.quantity > 1
-          ? { ...item, quantity: item.quantity - 1 }
-          : item,
-      ),
-    }));
-  };
-
-  const remove = (productId: string) => {
-    setCart((prev) => ({
-      ...prev,
-      items: prev.items.filter((item) => item.productId !== productId),
-    }));
-  };
-
-  const total = cartItems.reduce(
-    (sum, item) => sum + item.unitPrice * item.quantity,
-    0,
-  );
 
   return (
     <div style={{ padding: "2rem" }}>
@@ -89,7 +53,7 @@ export default function Cart() {
         ))
       )}
 
-      <h2 style={{ marginTop: "2rem" }}>Total: ${total}</h2>
+      <h2 style={{ marginTop: "2rem" }}>Total: ${cartTotal}</h2>
 
       <button
         style={{
