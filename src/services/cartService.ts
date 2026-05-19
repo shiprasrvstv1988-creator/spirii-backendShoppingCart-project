@@ -43,7 +43,9 @@ export async function addItem(
     throw new Error("Product not found");
   }
 
-  const existingItem = cart.items.find((item) => item.productId === productId);
+  const existingItem = cart.items.find(
+    (item: CartItem) => item.productId === productId
+  );
 
   if (existingItem) {
     existingItem.quantity += quantity;
@@ -73,7 +75,7 @@ export async function updateItemQuantity(
 
   const cart = await getCart(cartId);
 
-  const item = cart.items.find((i) => i.productId === productId);
+  const item = cart.items.find((i: CartItem) => i.productId === productId);
 
   if (!item) {
     throw new Error("Item not found in cart");
@@ -92,13 +94,17 @@ export async function removeItem(
 ): Promise<Cart> {
   const cart = await getCart(cartId);
 
-  const itemExists = cart.items.find((item) => item.productId === productId);
+  const itemExists = cart.items.find(
+    (item: CartItem) => item.productId === productId
+  );
 
   if (!itemExists) {
     throw new Error("Item not found in cart");
   }
 
-  cart.items = cart.items.filter((item) => item.productId !== productId);
+  cart.items = cart.items.filter(
+    (item: CartItem) => item.productId !== productId
+  );
 
   await saveCart(cart);
   return cart;
