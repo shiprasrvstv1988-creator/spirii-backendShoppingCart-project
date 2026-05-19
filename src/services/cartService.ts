@@ -1,8 +1,7 @@
 import { Cart, CartItem } from "../types";
-import { getCartById, saveCart } from "../../data/cartData";
-import { getProductById } from "../../data/productionData";
+import { getCartById, saveCart } from "../data/cartData";
+import { getProductById } from "../data/productionData";
 
-//Create a new cart
 export async function createCart(cartId: string): Promise<Cart> {
   const newCart: Cart = {
     id: cartId,
@@ -15,7 +14,6 @@ export async function createCart(cartId: string): Promise<Cart> {
   return newCart;
 }
 
-//Get a cart by id
 export async function getCart(cartId: string): Promise<Cart> {
   const cart = await getCartById(cartId);
 
@@ -26,7 +24,6 @@ export async function getCart(cartId: string): Promise<Cart> {
   return cart;
 }
 
-//Add item to cart
 export async function addItem(
   cartId: string,
   productId: string,
@@ -61,7 +58,6 @@ export async function addItem(
   return cart;
 }
 
-//Update quantity of an item in the cart
 export async function updateItemQuantity(
   cartId: string,
   productId: string,
@@ -72,8 +68,7 @@ export async function updateItemQuantity(
   }
 
   const cart = await getCart(cartId);
-
-  const item = cart.items.find((i) => i.productId === productId);
+  const item = cart.items.find((item) => item.productId === productId);
 
   if (!item) {
     throw new Error("Item not found in cart");
@@ -85,13 +80,11 @@ export async function updateItemQuantity(
   return cart;
 }
 
-//Remove item from cart
 export async function removeItem(
   cartId: string,
   productId: string,
 ): Promise<Cart> {
   const cart = await getCart(cartId);
-
   const itemExists = cart.items.find((item) => item.productId === productId);
 
   if (!itemExists) {
@@ -104,7 +97,6 @@ export async function removeItem(
   return cart;
 }
 
-//Checkout cart and calculate total price
 export async function checkout(cartId: string) {
   const cart = await getCart(cartId);
 
