@@ -86,3 +86,48 @@ export function updateItemQuantity(
   saveCart(cart);
   return cart;
 }
+
+//Remove item from cart
+
+export function removeItem(cartId: string, productId: string): Cart {
+  const cart = getCart(cartId);
+
+  const itemExists = cart.items.find((item) => item.productId === productId);
+
+  if (!itemExists) {
+    throw new Error("Item not found in cart");
+  }
+
+  cart.items = cart.items.filter((item) => item.productId !== productId);
+
+  saveCart(cart);
+  return cart;
+}
+
+//Checkout cart and calculate total price
+
+export function checkout(cartId: string) {
+  const cart = getCart(cartId);
+
+  if (cart.items.length === 0) {
+    throw new Error("Cart is empty");
+  }
+
+  let total = 0;
+
+  for (const item of cart.items) {
+    const product = getProductById(item.productId);
+
+    if (!product) {
+      throw new Error(`Product ${item.productId} not found`);
+    }
+
+    total += product.price * item.quantity;
+  }
+
+  return {
+    cartId: cart.id,
+    items: cart.items,
+    total,
+  };
+}
