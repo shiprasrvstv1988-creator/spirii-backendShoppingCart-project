@@ -4,6 +4,8 @@ import Cart from "./pages/Cart";
 import Checkout from "./pages/Checkout";
 import { useCart } from "./context/CartContext";
 import { FaShoppingCart } from "react-icons/fa";
+import CheckoutSuccess from "./pages/checkoutSuccess";
+
 export default function App() {
   const { cartCount } = useCart();
   return (
@@ -48,6 +50,7 @@ export default function App() {
         <Route path="/products" element={<Products />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/checkout" element={<Checkout />} />
+        <Route path="/checkout/success" element={<CheckoutSuccess />} />
       </Routes>
     </>
   );

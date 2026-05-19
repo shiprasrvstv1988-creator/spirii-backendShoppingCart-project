@@ -1,8 +1,10 @@
 import { useCart } from "../context/CartContext";
 import { mockProducts } from "../data/products";
+import { useNavigate } from "react-router-dom";
 
 export default function Cart() {
   const { cart, increase, decrease, remove, cartTotal } = useCart();
+  const navigate = useNavigate();
   const cartItems = cart.items.map((item) => {
     const product = mockProducts.find((p) => p.id === item.productId);
 
@@ -56,6 +58,7 @@ export default function Cart() {
       <h2 style={{ marginTop: "2rem" }}>Total: ${cartTotal}</h2>
 
       <button
+        onClick={() => navigate("/checkout")}
         style={{
           marginTop: "1rem",
           padding: "1rem",
