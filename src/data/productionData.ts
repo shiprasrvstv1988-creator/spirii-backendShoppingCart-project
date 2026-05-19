@@ -5,6 +5,7 @@ const productsFilePath = path.join(process.cwd(), "data", "products.json");
 
 export async function getProducts() {
   const data = await readFile(productsFilePath, "utf-8");
+  if (!data) throw new Error("product data is empty");
   return JSON.parse(data);
 }
 
