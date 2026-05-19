@@ -4,6 +4,7 @@ dotenv.config();
 import express, { Request, Response, NextFunction } from "express";
 import productsRouter from "./routes/products";
 import cartRouter from "./routes/cart";
+import checkoutRouter from "./routes/checkout";
 
 const app = express();
 const PORT = Number(process.env.PORT) || 3000;
@@ -16,6 +17,7 @@ app.get("/", (request, response) => {
 
 app.use("/products", productsRouter);
 app.use("/cart", cartRouter);
+app.use("/checkout", checkoutRouter);
 
 app.use(
   (error: Error, request: Request, response: Response, next: NextFunction) => {
