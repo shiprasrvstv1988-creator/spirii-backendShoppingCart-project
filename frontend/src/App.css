@@ -72,7 +72,7 @@
 
 #next-steps {
   display: flex;
-  border-top: 1px solid var(--border);
+
   text-align: left;
 
   & > div {
@@ -154,7 +154,7 @@
 }
 
 #spacer {
-  height: 88px;
+  display: none;
   border-top: 1px solid var(--border);
   @media (max-width: 1024px) {
     height: 48px;
@@ -167,7 +167,7 @@
 
   &::before,
   &::after {
-    content: '';
+    content: "";
     position: absolute;
     top: -4.5px;
     border: 5px solid transparent;

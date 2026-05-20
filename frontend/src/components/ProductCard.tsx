@@ -41,15 +41,22 @@ export default function ProductCard({ product }: { product: Product }) {
 
       <button
         onClick={() => addToCart(product.id, product.price)}
-        disabled={!product.available}
+        onMouseEnter={(e: React.MouseEvent<HTMLButtonElement>) => {
+          if (product.available) e.currentTarget.style.background = "#8B6EF6";
+        }}
+        onMouseLeave={(e: React.MouseEvent<HTMLButtonElement>) => {
+          if (product.available) e.currentTarget.style.background = "#A78BFA";
+        }}
         style={{
           width: "100%",
-          padding: "0.7rem",
-          background: product.available ? "#333" : "#aaa",
+          padding: "0.9rem 1.5rem",
+          background: product.available ? "#A78BFA" : "#ccc",
           color: "white",
           border: "none",
-          borderRadius: "6px",
+          borderRadius: "8px",
           cursor: product.available ? "pointer" : "not-allowed",
+          fontWeight: "bold",
+          transition: "background 0.2s ease",
         }}
       >
         Add to Cart
