@@ -23,3 +23,12 @@ export type ApiError = {
   error: string;
   details?: string;
 };
+
+export type AddItemBody = {
+  productId: string;
+  quantity: number;
+};
+
+export type UpdateQuantityBody = {
+  quantity: number;
+};

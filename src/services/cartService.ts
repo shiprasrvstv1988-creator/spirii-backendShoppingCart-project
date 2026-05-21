@@ -1,6 +1,12 @@
 import { Cart, CartItem } from "../types";
-import { getCartById, saveCart } from "../data/cartData";
+import { getCartById, saveCart, updateCart } from "../data/cartData";
 import { getProductById } from "../data/productionData";
+
+function ensureActiveCart(cart: Cart): void {
+  if (cart.status !== "active") {
+    throw new Error("Cart is already checked out");
+  }
+}
 
 export async function createCart(cartId: string): Promise<Cart> {
   const newCart: Cart = {
@@ -33,31 +39,33 @@ export async function addItem(
     throw new Error("Quantity must be greater than 0");
   }
 
-  const cart = await getCart(cartId);
   const product = await getProductById(productId);
 
   if (!product) {
     throw new Error("Product not found");
   }
 
-  const existingItem = cart.items.find(
-    (item: CartItem) => item.productId === productId
-  );
+  return updateCart(cartId, (cart) => {
+    ensureActiveCart(cart);
 
-  if (existingItem) {
-    existingItem.quantity += quantity;
-  } else {
-    const newItem: CartItem = {
-      productId,
-      quantity,
-      unitPrice: product.price,
-    };
+    const existingItem = cart.items.find(
+      (item: CartItem) => item.productId === productId
+    );
 
-    cart.items.push(newItem);
-  }
+    if (existingItem) {
+      existingItem.quantity += quantity;
+    } else {
+      const newItem: CartItem = {
+        productId,
+        quantity,
+        unitPrice: product.price,
+      };
 
-  await saveCart(cart);
-  return cart;
+      cart.items.push(newItem);
+    }
+
+    return cart;
+  });
 }
 
 export async function updateItemQuantity(
@@ -69,59 +77,66 @@ export async function updateItemQuantity(
     throw new Error("Quantity must be greater than 0");
   }
 
-  const cart = await getCart(cartId);
-  const item = cart.items.find((item) => item.productId === productId);
+  return updateCart(cartId, (cart) => {
+    ensureActiveCart(cart);
 
-  if (!item) {
-    throw new Error("Item not found in cart");
-  }
+    const item = cart.items.find((item) => item.productId === productId);
 
-  item.quantity = quantity;
+    if (!item) {
+      throw new Error("Item not found in cart");
+    }
 
-  await saveCart(cart);
-  return cart;
+    item.quantity = quantity;
+
+    return cart;
+  });
 }
 
 export async function removeItem(
   cartId: string,
   productId: string,
 ): Promise<Cart> {
-  const cart = await getCart(cartId);
-  const itemExists = cart.items.find((item) => item.productId === productId);
+  return updateCart(cartId, (cart) => {
+    ensureActiveCart(cart);
 
-  if (!itemExists) {
-    throw new Error("Item not found in cart");
-  }
+    const itemExists = cart.items.find((item) => item.productId === productId);
 
-  cart.items = cart.items.filter(
-    (item: CartItem) => item.productId !== productId
-  );
+    if (!itemExists) {
+      throw new Error("Item not found in cart");
+    }
 
-  await saveCart(cart);
-  return cart;
+    cart.items = cart.items.filter(
+      (item: CartItem) => item.productId !== productId
+    );
+
+    return cart;
+  });
 }
 
 export async function checkout(cartId: string) {
-  const cart = await getCart(cartId);
-
-  if (cart.items.length === 0) {
-    throw new Error("Cart is empty");
-  }
-
   let total = 0;
 
-  for (const item of cart.items) {
-    const product = await getProductById(item.productId);
+  const cart = await updateCart(cartId, async (cart) => {
+    ensureActiveCart(cart);
 
-    if (!product) {
-      throw new Error(`Product ${item.productId} not found`);
+    if (cart.items.length === 0) {
+      throw new Error("Cart is empty");
     }
 
-    total += product.price * item.quantity;
-  }
+    for (const item of cart.items) {
+      const product = await getProductById(item.productId);
 
-  cart.status = "checked_out";
-  await saveCart(cart);
+      if (!product) {
+        throw new Error(`Product ${item.productId} not found`);
+      }
+
+      total += product.price * item.quantity;
+    }
+
+    cart.status = "checked_out";
+
+    return cart;
+  });
 
   return {
     cartId: cart.id,

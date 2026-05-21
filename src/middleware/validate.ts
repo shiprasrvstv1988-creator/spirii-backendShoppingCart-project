@@ -1,7 +1,8 @@
 import { Request, Response, NextFunction } from "express";
+import { AddItemBody, UpdateQuantityBody } from "../types";
 
 export const validateAddItem = (
-  request: Request,
+  request: Request<{}, {}, AddItemBody>,
   response: Response,
   next: NextFunction,
 ) => {
@@ -18,7 +19,7 @@ export const validateAddItem = (
 };
 
 export const validateUpdateQuantity = (
-  request: Request,
+  request: Request<{}, {}, UpdateQuantityBody>,
   response: Response,
   next: NextFunction,
 ) => {
