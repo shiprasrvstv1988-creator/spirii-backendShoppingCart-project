@@ -21,7 +21,6 @@ export default function Cart() {
       style={{
         padding: "2rem",
         background: "#F5F0FF",
-        minHeight: "100vh",
       }}>
       <h1
         style={{

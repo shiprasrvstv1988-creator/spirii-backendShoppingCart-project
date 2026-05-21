@@ -29,7 +29,7 @@ export default function Checkout() {
   if (isLoading) return <p style={{ textAlign: "center" }}>Loading...</p>;
 
   return (
-    <div style={{ padding: "2rem", background: "#F5F0FF", minHeight: "100vh" }}>
+    <div style={{ padding: "2rem", background: "#F5F0FF" }}>
       <h1
         style={{
           textAlign: "center",
