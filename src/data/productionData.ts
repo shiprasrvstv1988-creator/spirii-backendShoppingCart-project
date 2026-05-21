@@ -1,8 +1,8 @@
 import { readFile } from "fs/promises";
 import path from "path";
-import { Product } from "../src/types";
+import { Product } from "../types/index";
 
-const productsFilePath = path.join(process.cwd(), "data", "products.json");
+const productsFilePath = path.join(process.cwd(), "data", "product.json");
 
 export async function getProducts() {
   const data = await readFile(productsFilePath, "utf-8");
@@ -11,10 +11,5 @@ export async function getProducts() {
 
 export async function getProductById(id: string) {
   const products = await getProducts();
-  return (
-    products.find(
-      (product: { id: string; description: string; available: boolean }) =>
-        product.id === id,
-    ) || null
-  );
+  return products.find((product) => product.id === id) || null;
 }

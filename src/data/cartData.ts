@@ -1,6 +1,6 @@
 import { readFile, writeFile } from "fs/promises";
 import path from "path";
-import { Cart } from "../src/types";
+import { Cart } from "../types/index";
 
 const cartFilePath = path.join(process.cwd(), "data", "cart.json");
 
