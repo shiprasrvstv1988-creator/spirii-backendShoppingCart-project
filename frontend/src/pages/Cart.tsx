@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 export default function Cart() {
   const { cart, increase, decrease, remove, cartTotal, error } = useCart();
-  const { products } = useProducts();
+  const { products, isLoading } = useProducts();
   const navigate = useNavigate();
   const cartItems = cart.items.map((item) => {
     const product = products.find((p) => p.id === item.productId);
@@ -15,15 +15,14 @@ export default function Cart() {
       description: product?.description || "",
     };
   });
-
+  if (isLoading) return <p style={{ textAlign: "center" }}>Loading...</p>;
   return (
     <div
       style={{
         padding: "2rem",
         background: "#F5F0FF",
         minHeight: "100vh",
-      }}
-    >
+      }}>
       <h1
         style={{
           textAlign: "center",
@@ -31,8 +30,7 @@ export default function Cart() {
           color: "#000",
           fontSize: "2rem",
           fontWeight: "bold",
-        }}
-      >
+        }}>
         Your Cart
       </h1>
 
@@ -42,8 +40,7 @@ export default function Cart() {
             color: "#B42318",
             textAlign: "center",
             marginBottom: "1rem",
-          }}
-        >
+          }}>
           {error}
         </p>
       )}
@@ -58,8 +55,7 @@ export default function Cart() {
             padding: "2rem",
             borderRadius: "12px",
             boxShadow: "0 4px 12px rgba(0,0,0,0.08)",
-          }}
-        >
+          }}>
           <p style={{ color: "#444", marginBottom: "1.5rem" }}>
             Your cart is empty.
           </p>
@@ -77,8 +73,9 @@ export default function Cart() {
               transition: "background 0.2s ease",
             }}
             onMouseEnter={(e) => (e.currentTarget.style.background = "#8B6EF6")}
-            onMouseLeave={(e) => (e.currentTarget.style.background = "#A78BFA")}
-          >
+            onMouseLeave={(e) =>
+              (e.currentTarget.style.background = "#A78BFA")
+            }>
             Back to Products
           </button>
         </div>
@@ -91,8 +88,7 @@ export default function Cart() {
             padding: "2rem",
             borderRadius: "12px",
             boxShadow: "0 4px 12px rgba(0,0,0,0.08)",
-          }}
-        >
+          }}>
           {cartItems.map((item) => (
             <div
               key={item.productId}
@@ -102,8 +98,7 @@ export default function Cart() {
                 alignItems: "center",
                 padding: "1rem",
                 borderBottom: "1px solid #eee",
-              }}
-            >
+              }}>
               <div>
                 <h3 style={{ margin: 0, color: "#000" }}>{item.name}</h3>
                 <p style={{ margin: "4px 0", color: "#555" }}>
@@ -116,8 +111,7 @@ export default function Cart() {
                   display: "flex",
                   gap: "0.5rem",
                   alignItems: "center",
-                }}
-              >
+                }}>
                 <button
                   onClick={() => decrease(item.productId)}
                   style={{
@@ -127,8 +121,7 @@ export default function Cart() {
                     borderRadius: "6px",
                     cursor: "pointer",
                     fontWeight: "bold",
-                  }}
-                >
+                  }}>
                   -
                 </button>
                 <span style={{ fontWeight: "bold", color: "#000" }}>
@@ -143,8 +136,7 @@ export default function Cart() {
                     borderRadius: "6px",
                     cursor: "pointer",
                     fontWeight: "bold",
-                  }}
-                >
+                  }}>
                   +
                 </button>
               </div>
@@ -159,8 +151,7 @@ export default function Cart() {
                   borderRadius: "6px",
                   cursor: "pointer",
                   fontWeight: "bold",
-                }}
-              >
+                }}>
                 Remove
               </button>
             </div>
@@ -171,8 +162,7 @@ export default function Cart() {
               marginTop: "2rem",
               textAlign: "right",
               color: "#000",
-            }}
-          >
+            }}>
             Total: ${cartTotal}
           </h2>
 
@@ -195,8 +185,7 @@ export default function Cart() {
             }}
             onMouseLeave={(e) => {
               e.currentTarget.style.background = "#A78BFA";
-            }}
-          >
+            }}>
             Proceed to Checkout
           </button>
         </div>
