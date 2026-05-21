@@ -1,13 +1,14 @@
 import { useCart } from "../context/CartContext";
-import { mockProducts } from "../data/products";
+import { useProducts } from "../hooks/useProducts";
 import { useNavigate } from "react-router-dom";
 
 export default function Checkout() {
-  const { cart, cartTotal, clearCart } = useCart();
+  const { cart, cartTotal, placeOrder, error } = useCart();
+  const { products, isLoading } = useProducts();
   const navigate = useNavigate();
 
   const cartItems = cart.items.map((item) => {
-    const product = mockProducts.find((p) => p.id === item.productId);
+    const product = products.find((p) => p.id === item.productId);
 
     return {
       ...item,
@@ -16,10 +17,16 @@ export default function Checkout() {
     };
   });
 
-  const handlePlaceOrder = () => {
-    clearCart();
-    navigate("/checkout/success");
+  const handlePlaceOrder = async () => {
+    try {
+      await placeOrder();
+      navigate("/checkout/success");
+    } catch {
+      return;
+    }
   };
+
+  if (isLoading) return <p style={{ textAlign: "center" }}>Loading...</p>;
 
   return (
     <div style={{ padding: "2rem", background: "#F5F0FF", minHeight: "100vh" }}>
@@ -30,10 +37,20 @@ export default function Checkout() {
           color: "#000",
           fontSize: "2rem",
           fontWeight: "bold",
-        }}
-      >
+        }}>
         Checkout
       </h1>
+
+      {error && (
+        <p
+          style={{
+            color: "#B42318",
+            textAlign: "center",
+            marginBottom: "1rem",
+          }}>
+          {error}
+        </p>
+      )}
 
       {cartItems.length === 0 ? (
         <div
@@ -45,15 +62,13 @@ export default function Checkout() {
             padding: "2rem",
             borderRadius: "12px",
             boxShadow: "0 4px 12px rgba(0,0,0,0.08)",
-          }}
-        >
+          }}>
           <p
             style={{
               color: "#555",
               fontSize: "1.1rem",
               marginBottom: "2rem",
-            }}
-          >
+            }}>
             Your cart is empty.
           </p>
           <button
@@ -70,8 +85,9 @@ export default function Checkout() {
               transition: "background 0.2s ease",
             }}
             onMouseEnter={(e) => (e.currentTarget.style.background = "#8B6EF6")}
-            onMouseLeave={(e) => (e.currentTarget.style.background = "#A78BFA")}
-          >
+            onMouseLeave={(e) =>
+              (e.currentTarget.style.background = "#A78BFA")
+            }>
             Back to Products
           </button>
         </div>
@@ -85,16 +101,14 @@ export default function Checkout() {
               padding: "2rem",
               borderRadius: "12px",
               boxShadow: "0 4px 12px rgba(0,0,0,0.08)",
-            }}
-          >
+            }}>
             <h2
               style={{
                 marginBottom: "1rem",
                 color: "#000",
                 fontSize: "1.4rem",
                 fontWeight: "bold",
-              }}
-            >
+              }}>
               Order Summary
             </h2>
 
@@ -106,8 +120,7 @@ export default function Checkout() {
                   justifyContent: "space-between",
                   padding: "1rem 0",
                   borderBottom: "1px solid #eee",
-                }}
-              >
+                }}>
                 <div>
                   <h3 style={{ margin: 0, color: "#000" }}>{item.name}</h3>
                   <p style={{ margin: "4px 0", color: "#555" }}>
@@ -125,8 +138,7 @@ export default function Checkout() {
                 fontWeight: "900",
                 color: "#000",
                 textAlign: "right",
-              }}
-            >
+              }}>
               Total: ${cartTotal}
             </h2>
 
@@ -149,8 +161,7 @@ export default function Checkout() {
               }
               onMouseLeave={(e) =>
                 (e.currentTarget.style.background = "#A78BFA")
-              }
-            >
+              }>
               Place Order
             </button>
           </div>

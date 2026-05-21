@@ -34,5 +34,34 @@
     "items": [],
     "status": "active",
     "createdAt": "2026-05-19T20:17:34.579Z"
+  },
+  {
+    "id": "ecc56f6a-a416-41a3-94b7-9a365b5865ba",
+    "items": [
+      {
+        "productId": "1",
+        "quantity": 1,
+        "unitPrice": 25
+      },
+      {
+        "productId": "3",
+        "quantity": 2,
+        "unitPrice": 30
+      }
+    ],
+    "status": "checked_out",
+    "createdAt": "2026-05-21T16:15:43.875Z"
+  },
+  {
+    "id": "bf21f10d-05a8-441a-8966-d1a9ab272ae8",
+    "items": [
+      {
+        "productId": "2",
+        "quantity": 2,
+        "unitPrice": 35
+      }
+    ],
+    "status": "active",
+    "createdAt": "2026-05-21T16:26:07.852Z"
   }
 ]

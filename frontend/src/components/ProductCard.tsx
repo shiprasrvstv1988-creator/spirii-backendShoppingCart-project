@@ -1,15 +1,9 @@
 import { useCart } from "../context/CartContext";
-
-type Product = {
-  id: string;
-  name: string;
-  description: string;
-  price: number;
-  available: boolean;
-};
+import type { Product } from "../types";
 
 export default function ProductCard({ product }: { product: Product }) {
-  const { addToCart } = useCart();
+  const { addToCart, isCartReady } = useCart();
+  const canAdd = product.available && isCartReady;
 
   return (
     <div
@@ -40,26 +34,27 @@ export default function ProductCard({ product }: { product: Product }) {
       </p>
 
       <button
-        onClick={() => addToCart(product.id, product.price)}
-        onMouseEnter={(e: React.MouseEvent<HTMLButtonElement>) => {
-          if (product.available) e.currentTarget.style.background = "#8B6EF6";
+        disabled={!canAdd}
+        onClick={() => addToCart(product.id)}
+        onMouseEnter={(e) => {
+          if (canAdd) e.currentTarget.style.background = "#8B6EF6";
         }}
-        onMouseLeave={(e: React.MouseEvent<HTMLButtonElement>) => {
-          if (product.available) e.currentTarget.style.background = "#A78BFA";
+        onMouseLeave={(e) => {
+          if (canAdd) e.currentTarget.style.background = "#A78BFA";
         }}
         style={{
           width: "100%",
           padding: "0.9rem 1.5rem",
-          background: product.available ? "#A78BFA" : "#ccc",
+          background: canAdd ? "#A78BFA" : "#ccc",
           color: "white",
           border: "none",
           borderRadius: "8px",
-          cursor: product.available ? "pointer" : "not-allowed",
+          cursor: canAdd ? "pointer" : "not-allowed",
           fontWeight: "bold",
           transition: "background 0.2s ease",
         }}
       >
-        Add to Cart
+        {isCartReady ? "Add to Cart" : "Loading Cart..."}
       </button>
     </div>
   );
