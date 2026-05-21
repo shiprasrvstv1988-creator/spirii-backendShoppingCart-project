@@ -1,10 +1,10 @@
-# ☕ Brewed With Love: Coffee Shop Backend
+# Brewed With Love: Coffee Shop Backend
 
 A RESTful API backend for an online coffee shop with a shopping cart, built with Node.js, Express and TypeScript. Includes a React frontend that connects to the API.
 
-Built by **Paloma Cardozo**, **Emebet Hunde** and **Shipra Srivastava** as part of the HackYourFuture × Spirii Day 2 Practical Assignment.
+Built by **Paloma Cardozo**, **Emebet Hunde** and **Shipra Srivastava** as part of the HackYourFuture x Spirii Day 2 Practical Assignment.
 
-🔗 **Live demo:** [https://shopbrewedwithlove.onrender.com](https://shopbrewedwithlove.onrender.com)
+**Live demo:** [https://shopbrewedwithlove.onrender.com](https://shopbrewedwithlove.onrender.com)
 
 ---
 
@@ -49,7 +49,7 @@ npm install
 cp .env.example .env
 ```
 
-Edit `.env` with your values (see [Configuration](#configuration)).
+Edit `.env` with your values. See [Configuration](#configuration).
 
 **4. Start the development server**
 
@@ -73,7 +73,7 @@ npm --prefix frontend install
 
 Create `frontend/.env.local` with:
 
-```
+```txt
 VITE_API_URL=
 ```
 
@@ -104,82 +104,70 @@ The app will start on `http://localhost:5173`.
 | -------------- | -------------------- | ------------------------------------- |
 | `VITE_API_URL` | Backend API base URL | `https://brewedwithlove.onrender.com` |
 
-> Leave `VITE_API_URL` empty for local development. Set it to the deployed backend URL in production.
+Leave `VITE_API_URL` empty for local development. Set it to the deployed backend URL in production.
 
 ---
 
 ## Project Structure
 
-```
-├── data/
-│   ├── cart.json                ← persisted cart data (starts as [])
-│   └── product.json             ← coffee product catalogue
-├── frontend/                    ← React + TypeScript + Vite frontend
-|   ├── public/
-│   ├── src/
-|   │   ├── assets/
-│   │   ├── public/
-|   │   ├── constants/
-|   |   |   └── navLinks.ts
-|   |   ├── api.ts               ← functions for calling the backend API
-│   │   ├── types.ts             ← shared TypeScript types
-│   │   ├── components/
-│   │   │   └── ProductCard.tsx  ← product card component
-│   │   ├── context/
-│   │   │   └── CartContext.tsx  ← cart state connected to backend
-│   │   ├── hooks/
-│   │   │   └── useProducts.ts   ← hook for loading products from API
-│   │   ├── pages/
-│   │   │   ├── Home.tsx
-│   │   │   ├── Products.tsx
-│   │   │   ├── Cart.tsx
-│   │   │   ├── Checkout.tsx
-│   │   │   └── CheckoutSuccess.tsx
-|   |   ├── App.css
-|   |   ├── index.css
-|   |   ├── main.tsx
-│   │   └── App.tsx              ← routing and layout
-|   ├── .env.example
-|   ├── .gitignore
-|   ├── eslint.config.js
-|   ├── index.html
-|   ├── README.md
-|   ├── package-lock.json
-|   ├── package.json
-|   ├── tsconfig.app.json
-|   ├── tsconfig.json
-|   ├── tsconfig.node.json
-│   └── vite.config.ts           ← Vite config with API proxy
-├── src/
-│   ├── data/
-│   │   ├── cartData.ts          ← read/write cart JSON with mutex
-│   │   └── productionData.ts    ← read product JSON
-│   ├── middleware/
-│   │   └── validate.ts          ← request body validation
-│   ├── routes/
-│   │   ├── cart.ts              ← cart endpoints
-│   │   ├── checkout.ts          ← checkout endpoint
-│   │   └── products.ts          ← products endpoint
-│   ├── services/
-│   │   └── cartService.ts       ← business logic
-│   ├── types/
-│   │   └── index.ts             ← shared TypeScript types
-│   └── index.ts                 ← Express app entry point
-├── .env.example
-├── .gitignore
-├── nodemon.json
-├── package.json
-├── tsconfig.json
-├── package-lock.json
-├── README.md
-└── Coffee-Shop-API.postman_collection.json
+```txt
+data/
+  cart.json                 <- persisted cart data
+  product.json              <- coffee product catalogue
+frontend/                   <- React + TypeScript + Vite frontend
+  public/
+  src/
+    api.ts                  <- functions for calling the backend API
+    types.ts                <- frontend TypeScript types
+    components/
+      ProductCard.tsx       <- product card component
+    context/
+      CartContext.tsx       <- cart state connected to backend
+    hooks/
+      useProducts.ts        <- hook for loading products from API
+    pages/
+      Home.tsx
+      Products.tsx
+      Cart.tsx
+      Checkout.tsx
+      CheckoutSuccess.tsx
+    App.css
+    App.tsx                 <- routing and layout
+    index.css
+    main.tsx
+  package-lock.json
+  package.json
+  vite.config.ts            <- Vite config with API proxy
+src/
+  data/
+    cartData.ts             <- read/write cart JSON with mutex
+    productionData.ts       <- read product JSON
+  middleware/
+    validate.ts             <- request body validation
+  routes/
+    cart.ts                 <- cart endpoints
+    checkout.ts             <- checkout endpoint
+    products.ts             <- products endpoint
+  services/
+    cartService.ts          <- business logic
+  types/
+    index.ts                <- backend TypeScript types
+  index.ts                  <- Express app entry point
+.env.example
+.gitignore
+CoffeeShopAPI.postman_collection.json
+nodemon.json
+package-lock.json
+package.json
+README.md
+tsconfig.json
 ```
 
 ---
 
 ## API Endpoints
 
-Import `Coffee-Shop-API.postman_collection.json` into Postman to test all endpoints.
+Import `CoffeeShopAPI.postman_collection.json` into Postman to test all endpoints.
 
 ### Products
 
@@ -233,13 +221,13 @@ Example response:
 }
 ```
 
-**POST `/cart/:id/items`**: body:
+**POST `/cart/:id/items`** body:
 
 ```json
 { "productId": "1", "quantity": 2 }
 ```
 
-**PUT `/cart/:id/items/:productId`**: body:
+**PUT `/cart/:id/items/:productId`** body:
 
 ```json
 { "quantity": 5 }
@@ -277,7 +265,7 @@ All errors follow this shape:
 
 | Status | Meaning                                          |
 | ------ | ------------------------------------------------ |
-| `400`  | Invalid input (missing fields, invalid quantity) |
+| `400`  | Invalid input or business rule error             |
 | `404`  | Resource not found (cart, product, or item)      |
 | `500`  | Unexpected server error                          |
 
@@ -295,7 +283,7 @@ Cart IDs are generated using `crypto.randomUUID()`. The client never sends an ID
 When an item is added to a cart, the product's current price is stored on the `CartItem`. This ensures the checkout total reflects the price at the time of adding, not the current price if it changes later.
 
 **Cart status after checkout**
-After a successful checkout, the cart status changes to `checked_out`. The cart is preserved in the data store for reference. It is not deleted. The frontend automatically creates a new cart after checkout.
+After a successful checkout, the cart status changes to `checked_out`. The cart is preserved in the data store for reference. It is not deleted. Checked-out carts cannot be modified. The frontend automatically creates a new cart after checkout.
 
 **No user authentication**
 Users are identified solely by their cart ID. The frontend stores the cart ID in `localStorage` so the user keeps the same cart after refreshing the page.
@@ -303,8 +291,8 @@ Users are identified solely by their cart ID. The frontend stores the cart ID in
 **JSON file persistence**
 Cart and product data are stored in JSON files under `data/`. This keeps the setup simple. No database installation required.
 
-**Concurrent write protection**
-`saveCart` uses a mutex (`async-mutex`) to prevent data corruption when multiple requests try to write to `cart.json` at the same time. Only one write operation can run at a time.
+**Concurrent update protection**
+Cart updates use a mutex (`async-mutex`) so reading, changing and saving a cart happen as one protected operation. This helps prevent data corruption when multiple requests try to update `cart.json` at the same time.
 
 **Layered architecture**
 Code is split into four layers: data access (`src/data/`), business logic (`src/services/`), HTTP handling (`src/routes/`), and input validation (`src/middleware/`). Each layer has a single responsibility and does not reach into another layer's concern.

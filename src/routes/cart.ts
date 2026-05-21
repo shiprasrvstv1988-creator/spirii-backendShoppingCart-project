@@ -1,4 +1,4 @@
-import { Router } from "express";
+import { Request, Router } from "express";
 import {
   validateAddItem,
   validateUpdateQuantity,
@@ -11,6 +11,7 @@ import {
   updateItemQuantity,
   removeItem,
 } from "../services/cartService";
+import { AddItemBody, UpdateQuantityBody } from "../types";
 
 const cartRouter = Router();
 
@@ -40,25 +41,36 @@ cartRouter.post("/", async (request, response) => {
   }
 });
 
-cartRouter.post("/:id/items", validateAddItem, async (request, response) => {
-  const id = String(request.params.id);
-  const { productId, quantity } = request.body;
-  try {
-    const cart = await addItem(id, productId, quantity);
+cartRouter.post<"/:id/items", { id: string }, unknown, AddItemBody>(
+  "/:id/items",
+  validateAddItem,
+  async (request, response) => {
+    const id = String(request.params.id);
+    const { productId, quantity } = request.body;
+    try {
+      const cart = await addItem(id, productId, quantity);
 
-    response.status(201).json(cart);
-  } catch (error) {
-    const message = error instanceof Error ? error.message : "Unknown error";
-    const status = message.includes("not found") ? 404 : 400;
+      response.status(201).json(cart);
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Unknown error";
+      const status = message.includes("not found") ? 404 : 400;
 
-    response.status(status).json({ error: message });
-  }
-});
+      response.status(status).json({ error: message });
+    }
+  },
+);
 
 cartRouter.put(
   "/:id/items/:productId",
   validateUpdateQuantity,
-  async (request, response) => {
+  async (
+    request: Request<
+      { id: string; productId: string },
+      unknown,
+      UpdateQuantityBody
+    >,
+    response,
+  ) => {
     const id = String(request.params.id);
     const productId = String(request.params.productId);
     const { quantity } = request.body;
