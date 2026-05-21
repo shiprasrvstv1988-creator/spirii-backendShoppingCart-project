@@ -1,7 +1,9 @@
 import ProductCard from "../components/ProductCard";
-import { mockProducts } from "../data/products";
+import { useProducts } from "../hooks/useProducts";
 
 export default function Products() {
+  const { products, isLoading, error } = useProducts();
+
   return (
     <div
       style={{
@@ -17,7 +19,7 @@ export default function Products() {
           color: "#000",
           fontSize: "2rem",
           fontWeight: "bold",
-          letterSpacing: "0.5px",
+          letterSpacing: "0",
         }}
       >
         Brewed With Love
@@ -33,17 +35,28 @@ export default function Products() {
       >
         Choose your perfect cup
       </p>
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))",
-          gap: "1.5rem",
-        }}
-      >
-        {mockProducts.map((product) => (
-          <ProductCard key={product.id} product={product} />
-        ))}
-      </div>
+
+      {isLoading && <p style={{ textAlign: "center" }}>Loading products...</p>}
+
+      {error && (
+        <p style={{ color: "#B42318", textAlign: "center" }}>
+          Could not load products: {error}
+        </p>
+      )}
+
+      {!isLoading && !error && (
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))",
+            gap: "1.5rem",
+          }}
+        >
+          {products.map((product) => (
+            <ProductCard key={product.id} product={product} />
+          ))}
+        </div>
+      )}
     </div>
   );
 }

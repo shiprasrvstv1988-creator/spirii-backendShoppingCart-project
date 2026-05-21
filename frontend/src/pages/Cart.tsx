@@ -1,12 +1,13 @@
 import { useCart } from "../context/CartContext";
-import { mockProducts } from "../data/products";
+import { useProducts } from "../hooks/useProducts";
 import { useNavigate } from "react-router-dom";
 
 export default function Cart() {
-  const { cart, increase, decrease, remove, cartTotal } = useCart();
+  const { cart, increase, decrease, remove, cartTotal, error } = useCart();
+  const { products } = useProducts();
   const navigate = useNavigate();
   const cartItems = cart.items.map((item) => {
-    const product = mockProducts.find((p) => p.id === item.productId);
+    const product = products.find((p) => p.id === item.productId);
 
     return {
       ...item,
@@ -34,6 +35,18 @@ export default function Cart() {
       >
         Your Cart
       </h1>
+
+      {error && (
+        <p
+          style={{
+            color: "#B42318",
+            textAlign: "center",
+            marginBottom: "1rem",
+          }}
+        >
+          {error}
+        </p>
+      )}
 
       {cartItems.length === 0 ? (
         <div
@@ -177,10 +190,10 @@ export default function Cart() {
               cursor: "pointer",
               transition: "background 0.2s ease",
             }}
-            onMouseEnter={(e: React.MouseEvent<HTMLButtonElement>) => {
+            onMouseEnter={(e) => {
               e.currentTarget.style.background = "#8B6EF6";
             }}
-            onMouseLeave={(e: React.MouseEvent<HTMLButtonElement>) => {
+            onMouseLeave={(e) => {
               e.currentTarget.style.background = "#A78BFA";
             }}
           >

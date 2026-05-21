@@ -1,13 +1,14 @@
 import { useCart } from "../context/CartContext";
-import { mockProducts } from "../data/products";
+import { useProducts } from "../hooks/useProducts";
 import { useNavigate } from "react-router-dom";
 
 export default function Checkout() {
-  const { cart, cartTotal, clearCart } = useCart();
+  const { cart, cartTotal, placeOrder, error } = useCart();
+  const { products } = useProducts();
   const navigate = useNavigate();
 
   const cartItems = cart.items.map((item) => {
-    const product = mockProducts.find((p) => p.id === item.productId);
+    const product = products.find((p) => p.id === item.productId);
 
     return {
       ...item,
@@ -16,9 +17,13 @@ export default function Checkout() {
     };
   });
 
-  const handlePlaceOrder = () => {
-    clearCart();
-    navigate("/checkout/success");
+  const handlePlaceOrder = async () => {
+    try {
+      await placeOrder();
+      navigate("/checkout/success");
+    } catch {
+      return;
+    }
   };
 
   return (
@@ -34,6 +39,18 @@ export default function Checkout() {
       >
         Checkout
       </h1>
+
+      {error && (
+        <p
+          style={{
+            color: "#B42318",
+            textAlign: "center",
+            marginBottom: "1rem",
+          }}
+        >
+          {error}
+        </p>
+      )}
 
       {cartItems.length === 0 ? (
         <div
