@@ -9,9 +9,7 @@ export default function Products() {
       style={{
         padding: "2rem",
         background: "#F5F0FF",
-        minHeight: "100vh",
-      }}
-    >
+      }}>
       <h1
         style={{
           marginBottom: "0.5rem",
@@ -20,8 +18,7 @@ export default function Products() {
           fontSize: "2rem",
           fontWeight: "bold",
           letterSpacing: "0",
-        }}
-      >
+        }}>
         Brewed With Love
       </h1>
       <p
@@ -31,8 +28,7 @@ export default function Products() {
           marginTop: "0",
           marginBottom: "2.5rem",
           fontSize: "1.1rem",
-        }}
-      >
+        }}>
         Choose your perfect cup
       </p>
 
@@ -50,8 +46,9 @@ export default function Products() {
             display: "grid",
             gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))",
             gap: "1.5rem",
-          }}
-        >
+            maxWidth: "900px",
+            margin: "0 auto",
+          }}>
           {products.map((product) => (
             <ProductCard key={product.id} product={product} />
           ))}
