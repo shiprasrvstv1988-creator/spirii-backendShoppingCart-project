@@ -98,7 +98,7 @@ export default function Cart() {
                 padding: "1rem",
                 borderBottom: "1px solid #eee",
               }}>
-              <div>
+              <div style={{ width: "200px" }}>
                 <h3 style={{ margin: 0, color: "#000" }}>{item.name}</h3>
                 <p style={{ margin: "4px 0", color: "#555" }}>
                   ${item.unitPrice}
@@ -110,6 +110,8 @@ export default function Cart() {
                   display: "flex",
                   gap: "0.5rem",
                   alignItems: "center",
+                  width: "120px",
+                  justifyContent: "center",
                 }}>
                 <button
                   onClick={() => decrease(item.productId)}
@@ -150,6 +152,7 @@ export default function Cart() {
                   borderRadius: "6px",
                   cursor: "pointer",
                   fontWeight: "bold",
+                  width: "90px",
                 }}>
                 Remove
               </button>
@@ -170,6 +173,7 @@ export default function Cart() {
             style={{
               marginTop: "1rem",
               padding: "1rem",
+              width: "100%",
               background: "#A78BFA",
               color: "white",
               border: "none",

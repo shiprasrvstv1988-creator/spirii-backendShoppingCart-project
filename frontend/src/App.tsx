@@ -18,8 +18,7 @@ export default function App() {
         <button
           className="brand-button"
           type="button"
-          onClick={() => navigate("/")}
-        >
+          onClick={() => navigate("/")}>
           <FaCoffee className="brand-icon" aria-hidden="true" />
           <span>Brewed With Love</span>
         </button>
@@ -37,8 +36,10 @@ export default function App() {
         </div>
 
         <Link className="cart-link" to="/cart" aria-label="Cart">
-          <FaShoppingCart size={24} />
-          {cartCount > 0 && <span className="cart-badge">{cartCount}</span>}
+          <span style={{ position: "relative", display: "inline-flex" }}>
+            <FaShoppingCart size={24} />
+            {cartCount > 0 && <span className="cart-badge">{cartCount}</span>}
+          </span>
         </Link>
       </nav>
 
